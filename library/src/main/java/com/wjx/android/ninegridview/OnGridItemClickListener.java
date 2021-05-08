@@ -8,4 +8,5 @@ import android.view.View;
 public interface OnGridItemClickListener {
 
     void onItemClick(View v, int position);
+
 }

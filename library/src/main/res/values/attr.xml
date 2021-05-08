@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="NineGridLayout">
+    <declare-styleable name="NineGridView">
         <attr name="grid_span_count" format="integer" />
         <attr name="item_grid_spacing" format="dimension|integer" />
         <attr name="line_grid_spacing" format="dimension|integer" />
         <attr name="grid_max_count" format="integer" />
         <attr name="grid_min_count" format="integer" />
         <attr name="grid_text_spacing" format="dimension" />
-        <attr name="expandable" format="boolean" />
+        <!--是否支持展开功能-->
+        <attr name="expand_enable" format="boolean" />
+        <!--是否支持收起功能，只有expand_enable为true时才生效-->
+        <attr name="fold_enable" format="boolean" />
         <attr name="expand_text_color" format="color" />
         <attr name="expand_text_size" format="dimension" />
+        <attr name="expand_text_gravity" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="SquareLayout">
+        <attr name="SquareLayout_oscAccordTo" format="integer" />
     </declare-styleable>
 </resources>

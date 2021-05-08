@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
@@ -18,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
  * <p>
  * 九宫格布局
  */
-public class NineGridLayout extends LinearLayout {
+public class NineGridView extends LinearLayout {
 
     private int mSpanCount;
 
@@ -34,6 +36,8 @@ public class NineGridLayout extends LinearLayout {
 
     private Boolean mExpandable;
 
+    private Boolean mFoldEnable;
+
     private NineGridAdapter mNineGridAdapter;
 
     private GridLayoutManager mGridLayoutManager;
@@ -45,33 +49,35 @@ public class NineGridLayout extends LinearLayout {
     private TextView mExpandTextView;
 
     /**
-     * 是否展开
+     * 展开:true,默认收起
      */
     private boolean isExpand;
 
-    public NineGridLayout(Context context) {
+    public NineGridView(Context context) {
         this(context, null);
     }
 
-    public NineGridLayout(Context context, AttributeSet attrs) {
+    public NineGridView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public NineGridLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NineGridView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context, attrs);
     }
 
     private void init(Context context, AttributeSet attrs) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NineGridLayout);
-        mItemSpacing = a.getDimensionPixelSize(R.styleable.NineGridLayout_item_grid_spacing, 0);
-        mLineSpacing = a.getDimensionPixelSize(R.styleable.NineGridLayout_line_grid_spacing, 0);
-        mSpanCount = a.getInt(R.styleable.NineGridLayout_grid_span_count, 3);
-        int maxCount = a.getInt(R.styleable.NineGridLayout_grid_max_count, 9);
-        mMinCount = a.getInt(R.styleable.NineGridLayout_grid_min_count, 0);
-        mExpandable = a.getBoolean(R.styleable.NineGridLayout_expandable, false);
-        mGridTextSpacing = a.getDimensionPixelSize(R.styleable.NineGridLayout_grid_text_spacing, 0);
-        int textColor = a.getColor(R.styleable.NineGridLayout_expand_text_color, -1);
-        int textSize = a.getDimensionPixelSize(R.styleable.NineGridLayout_expand_text_size, 13);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NineGridView);
+        mItemSpacing = a.getDimensionPixelSize(R.styleable.NineGridView_item_grid_spacing, 0);
+        mLineSpacing = a.getDimensionPixelSize(R.styleable.NineGridView_line_grid_spacing, 0);
+        mSpanCount = a.getInt(R.styleable.NineGridView_grid_span_count, 3);
+        int maxCount = a.getInt(R.styleable.NineGridView_grid_max_count, 9);
+        mMinCount = a.getInt(R.styleable.NineGridView_grid_min_count, 0);
+        mExpandable = a.getBoolean(R.styleable.NineGridView_expand_enable, false);
+        mFoldEnable = a.getBoolean(R.styleable.NineGridView_fold_enable, false);
+        mGridTextSpacing = a.getDimensionPixelSize(R.styleable.NineGridView_grid_text_spacing, 0);
+        int textColor = a.getColor(R.styleable.NineGridView_expand_text_color, -1);
+        int textSize = a.getDimensionPixelSize(R.styleable.NineGridView_expand_text_size, 16);
         mMaxCount = Math.min(maxCount, 9);
         if (mSpanCount > maxCount) {
             throw new IllegalArgumentException("SpanCount cannot be greater than MaxCount");
@@ -88,9 +94,13 @@ public class NineGridLayout extends LinearLayout {
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setOverScrollMode(OVER_SCROLL_NEVER);
-        mRecyclerView.setHasFixedSize(true);
+        DefaultItemAnimator itemAnimator = (DefaultItemAnimator) mRecyclerView.getItemAnimator();
+        if (itemAnimator != null) {
+            itemAnimator.setSupportsChangeAnimations(false);
+        }
         attachViewToParent(mRecyclerView, 0, mRecyclerView.getLayoutParams());
         if (mExpandable) {
+            mRecyclerView.setHasFixedSize(false);
             mExpandTextView = new TextView(context);
             LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT);
@@ -98,7 +108,11 @@ public class NineGridLayout extends LinearLayout {
             layoutParams.topMargin = mGridTextSpacing;
             layoutParams.rightMargin = mGridTextSpacing;
             mExpandTextView.setLayoutParams(layoutParams);
-            mExpandTextView.setText("展开");
+            if (isExpand) {
+                mExpandTextView.setText("收起");
+            } else {
+                mExpandTextView.setText("展开");
+            }
             mExpandTextView.setTextSize(textSize);
             if (textColor != -1) {
                 mExpandTextView.setTextColor(textColor);
@@ -107,13 +121,17 @@ public class NineGridLayout extends LinearLayout {
                 @Override
                 public void onClick(View v) {
                     if (isExpand) {
-                        collapse();
+                        if (mFoldEnable) {
+                            fold();
+                        }
                     } else {
                         expand();
                     }
                 }
             });
             attachViewToParent(mExpandTextView, 1, mExpandTextView.getLayoutParams());
+        } else {
+            mRecyclerView.setHasFixedSize(true);
         }
     }
 
@@ -138,16 +156,19 @@ public class NineGridLayout extends LinearLayout {
         mNineGridAdapter = adapter;
         if (mNineGridAdapter != null) {
             mNineGridAdapter.setMinCount(mMinCount);
+            mNineGridAdapter.setExpandEnable(mExpandable);
         }
         mRecyclerView.setAdapter(adapter);
     }
 
-    public void collapse() {
+    public void fold() {
         if (!isExpand) {
             return;
         }
         if (mNineGridAdapter != null) {
-            mNineGridAdapter.collapse();
+            isExpand = false;
+            mNineGridAdapter.fold();
+            mExpandTextView.setText("展开");
         }
     }
 
@@ -156,11 +177,18 @@ public class NineGridLayout extends LinearLayout {
             return;
         }
         if (mNineGridAdapter != null) {
+            isExpand = true;
             mNineGridAdapter.expand();
+            if (mFoldEnable) {
+                mExpandTextView.setVisibility(View.VISIBLE);
+                mExpandTextView.setText("收起");
+            } else {
+                mExpandTextView.setVisibility(View.GONE);
+            }
         }
     }
 
-    public void setOnItemClickListener(OnGridItemClickListener listener) {
+    public void setOnItemClickListener(@NonNull OnGridItemClickListener listener) {
         if (mNineGridAdapter != null) {
             mNineGridAdapter.setOnItemClickListener(listener);
         }
