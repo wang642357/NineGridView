@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 /**
  * 作者：wangjianxiong 创建时间：2021/4/6
@@ -222,7 +221,7 @@ public class NineGridView extends LinearLayout {
     }
 
     @Nullable
-    public Adapter getAdapter() {
-        return mRecyclerView.getAdapter();
+    public NineGridAdapter getAdapter() {
+        return mNineGridAdapter;
     }
 }
