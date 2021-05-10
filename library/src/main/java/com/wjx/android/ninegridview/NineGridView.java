@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -85,7 +86,7 @@ public class NineGridView<T> extends LinearLayout {
         int gridTextSpacing = a
                 .getDimensionPixelSize(R.styleable.NineGridView_grid_text_spacing, 0);
         int textColor = a.getColor(R.styleable.NineGridView_expand_text_color, -1);
-        int textSize = a.getDimensionPixelSize(R.styleable.NineGridView_expand_text_size, 16);
+        int textSize = a.getDimensionPixelSize(R.styleable.NineGridView_expand_text_size, -1);
         mMaxCount = Math.min(maxCount, 9);
         if (mSpanCount > maxCount) {
             throw new IllegalArgumentException("SpanCount cannot be greater than MaxCount");
@@ -121,7 +122,9 @@ public class NineGridView<T> extends LinearLayout {
             } else {
                 mExpandTextView.setText("展开");
             }
-            mExpandTextView.setTextSize(textSize);
+            if (textSize != -1) {
+                mExpandTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+            }
             if (textColor != -1) {
                 mExpandTextView.setTextColor(textColor);
             }
