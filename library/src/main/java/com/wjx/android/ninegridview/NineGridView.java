@@ -108,36 +108,32 @@ public class NineGridView<T> extends LinearLayout {
             itemAnimator.setSupportsChangeAnimations(false);
         }
         attachViewToParent(mRecyclerView, 0, mRecyclerView.getLayoutParams());
-        if (mExpandable) {
-            mRecyclerView.setHasFixedSize(false);
-            mExpandTextView = new TextView(context);
-            LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
-                    LayoutParams.WRAP_CONTENT);
-            layoutParams.gravity = Gravity.END;
-            layoutParams.topMargin = gridTextSpacing;
-            layoutParams.rightMargin = gridTextSpacing;
-            mExpandTextView.setLayoutParams(layoutParams);
-            if (isExpand) {
-                mExpandTextView.setText("收起");
-            } else {
-                mExpandTextView.setText("展开");
-            }
-            if (textSize != -1) {
-                mExpandTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-            }
-            if (textColor != -1) {
-                mExpandTextView.setTextColor(textColor);
-            }
-            mExpandTextView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    expandClick();
-                }
-            });
-            attachViewToParent(mExpandTextView, 1, mExpandTextView.getLayoutParams());
+        mRecyclerView.setHasFixedSize(false);
+        mExpandTextView = new TextView(context);
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.END;
+        layoutParams.topMargin = gridTextSpacing;
+        layoutParams.rightMargin = gridTextSpacing;
+        mExpandTextView.setLayoutParams(layoutParams);
+        if (isExpand) {
+            mExpandTextView.setText("收起");
         } else {
-            mRecyclerView.setHasFixedSize(true);
+            mExpandTextView.setText("展开");
         }
+        if (textSize != -1) {
+            mExpandTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+        }
+        if (textColor != -1) {
+            mExpandTextView.setTextColor(textColor);
+        }
+        mExpandTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandClick();
+            }
+        });
+        attachViewToParent(mExpandTextView, 1, mExpandTextView.getLayoutParams());
     }
 
     @Override
