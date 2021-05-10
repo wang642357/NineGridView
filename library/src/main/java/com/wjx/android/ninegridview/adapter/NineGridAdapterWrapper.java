@@ -1,15 +1,17 @@
-package com.wjx.android.ninegridview;
+package com.wjx.android.ninegridview.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.wjx.android.ninegridview.SquareLayout;
+import com.wjx.android.ninegridview.listener.OnGridItemClickListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.IntRange;
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,11 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * 作者：wangjianxiong 创建时间：2021/4/30
  */
-public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridViewHolder> {
+public class NineGridAdapterWrapper<T> extends RecyclerView.Adapter<NineGridViewHolder> {
 
-    int mLayoutResId;
-
-    int minCount;
+    private int minCount;
 
     private List<T> data = new ArrayList<>();
 
@@ -33,8 +33,17 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
 
     private boolean mExpandEnable;
 
-    public NineGridAdapter(@LayoutRes int layoutResId) {
-        mLayoutResId = layoutResId;
+    NineGridAdapter<T> mAdapterWrapper;
+
+    public NineGridAdapterWrapper(int minCount, boolean expandEnable,
+            @NonNull NineGridAdapter<T> adapterWrapper) {
+        mAdapterWrapper = adapterWrapper;
+        this.minCount = minCount;
+        this.mExpandEnable = expandEnable;
+        if (adapterWrapper != null) {
+            List<T> data = adapterWrapper.getData();
+            setList(data);
+        }
     }
 
     @NonNull
@@ -42,14 +51,14 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
     public NineGridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         SquareLayout squareLayout = new SquareLayout(parent.getContext());
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(mLayoutResId, squareLayout, false);
+                .inflate(mAdapterWrapper.getItemLayoutId(), squareLayout, false);
         squareLayout.addView(view);
         NineGridViewHolder viewHolder = new NineGridViewHolder(squareLayout);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnGridItemClickListener != null) {
-                    mOnGridItemClickListener.onItemClick(v, viewHolder.getAdapterPosition());
+                    mOnGridItemClickListener.onItemClick(v, viewHolder.getBindingAdapterPosition());
                 }
             }
         });
@@ -58,10 +67,8 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
 
     @Override
     public void onBindViewHolder(@NonNull NineGridViewHolder holder, int position) {
-        onBindData(holder.itemView, position, data.get(position));
+        mAdapterWrapper.onBindData(holder.itemView, position, data.get(position));
     }
-
-    public abstract void onBindData(@NonNull View itemView, int position, @NonNull T item);
 
     public T getItem(@IntRange(from = 0) int position) {
         return data.get(position);
@@ -75,6 +82,19 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
     @NonNull
     public List<T> getData() {
         return data;
+    }
+
+    @NonNull
+    public List<T> getAllData() {
+        List<T> list = new ArrayList<>();
+        list.addAll(data);
+        list.addAll(foldData);
+        return list;
+    }
+
+    @NonNull
+    public List<T> getFoldData() {
+        return foldData;
     }
 
     public void setList(@Nullable List<T> dataList) {
@@ -97,7 +117,6 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
             data.addAll(result);
         }
         //如果需要展开收起，需要对传入的数据进行截断，并添加至
-        notifyDataSetChanged();
     }
 
     public void addData(@NonNull T data) {
@@ -132,12 +151,13 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
 
     public void setExpandEnable(boolean expandEnable) {
         mExpandEnable = expandEnable;
+        notifyDataSetChanged();
     }
 
     /**
      * 折叠宫格，展示最小数量
      */
-    void fold() {
+    public void fold() {
         if (minCount <= 0) {
             return;
         }
@@ -156,7 +176,7 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
     /**
      * 展开宫格，展示最大数量
      */
-    void expand() {
+    public void expand() {
         int positionStart = data.size();
         int itemCount = foldData.size();
         data.addAll(foldData);

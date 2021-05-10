@@ -1,4 +1,4 @@
-package com.wjx.android.ninegridview;
+package com.wjx.android.ninegridview.listener;
 
 import android.view.View;
 

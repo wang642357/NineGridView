@@ -1,16 +1,20 @@
-package com.wjx.android.ninegridview;
+package com.wjx.android.ninegridview.itemdecoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
  * 作者：wangjianxiong 创建时间：2021/4/6
  */
-class SpacingItemDecoration extends RecyclerView.ItemDecoration {
+@RestrictTo(LIBRARY_GROUP)
+public class SpacingItemDecoration extends RecyclerView.ItemDecoration {
 
     private final int mItemSpacing;
 

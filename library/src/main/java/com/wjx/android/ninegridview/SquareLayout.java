@@ -14,7 +14,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 
 @RestrictTo(LIBRARY_GROUP)
-class SquareLayout extends FrameLayout {
+public class SquareLayout extends FrameLayout {
 
     private int mBaseDirection;
 
