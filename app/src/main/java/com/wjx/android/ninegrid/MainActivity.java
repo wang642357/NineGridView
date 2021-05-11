@@ -1,6 +1,8 @@
 package com.wjx.android.ninegrid;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView list = findViewById(R.id.list);
         ListAdapter listAdapter = new ListAdapter(this, getList2());
         list.setAdapter(listAdapter);
+    }
+
+    public void second(View v) {
+        Intent intent = new Intent(this, SecondActivity.class);
+        startActivity(intent);
     }
 
     List<String> getList() {

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="com.wjx.android.ninegrid.MainActivity">
+
+   <Button
+       android:onClick="second"
+       android:layout_width="wrap_content"
+       android:text="go to second"
+       android:layout_height="wrap_content" />
 
    <androidx.recyclerview.widget.RecyclerView
        android:layout_width="match_parent"
@@ -12,4 +19,4 @@
        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
        android:layout_height="match_parent" />
 
-</FrameLayout>
+</LinearLayout>
