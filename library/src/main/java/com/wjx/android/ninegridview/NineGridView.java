@@ -134,6 +134,11 @@ public class NineGridView<T> extends LinearLayout {
             }
         });
         attachViewToParent(mExpandTextView, 1, mExpandTextView.getLayoutParams());
+        if (mExpandable) {
+            mExpandTextView.setVisibility(View.VISIBLE);
+        } else {
+            mExpandTextView.setVisibility(View.GONE);
+        }
     }
 
     @Override
