@@ -12,8 +12,8 @@
         app:fold_enable="true"
         app:grid_min_count="3"
         app:grid_text_spacing="10dp"
-        app:item_grid_spacing="5dp"
-        app:line_grid_spacing="5dp"
+        app:item_spacing="5dp"
+        app:line_spacing="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </RelativeLayout>
