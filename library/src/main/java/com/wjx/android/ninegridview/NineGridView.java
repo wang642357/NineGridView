@@ -86,8 +86,8 @@ public class NineGridView extends LinearLayout {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NineGridView);
-        mItemSpacing = a.getDimensionPixelSize(R.styleable.NineGridView_item_grid_spacing, 0);
-        mLineSpacing = a.getDimensionPixelSize(R.styleable.NineGridView_line_grid_spacing, 0);
+        mItemSpacing = a.getDimensionPixelSize(R.styleable.NineGridView_item_spacing, 0);
+        mLineSpacing = a.getDimensionPixelSize(R.styleable.NineGridView_line_spacing, 0);
         mSpanCount = a.getInt(R.styleable.NineGridView_grid_span_count, 3);
         int maxCount = a.getInt(R.styleable.NineGridView_grid_max_count, 9);
         mMinCount = a.getInt(R.styleable.NineGridView_grid_min_count, 3);
