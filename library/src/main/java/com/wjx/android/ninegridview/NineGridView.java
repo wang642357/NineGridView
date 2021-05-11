@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.customview.view.AbsSavedState;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -56,10 +58,19 @@ public class NineGridView<T> extends LinearLayout {
     private RecyclerView mRecyclerView;
 
     private TextView mExpandTextView;
+
     /**
      * 展开:true,默认收起
      */
     private boolean isExpand;
+
+    private CharSequence mExpandText;
+
+    private CharSequence mFoldText;
+
+    private static final String DEFAULT_EXPAND_TEXT = "展开";
+
+    private static final String DEFAULT_FOLD_TEXT = "收起";
 
     public NineGridView(Context context) {
         this(context, null);
@@ -87,6 +98,14 @@ public class NineGridView<T> extends LinearLayout {
                 .getDimensionPixelSize(R.styleable.NineGridView_grid_text_spacing, 0);
         int textColor = a.getColor(R.styleable.NineGridView_expand_text_color, -1);
         int textSize = a.getDimensionPixelSize(R.styleable.NineGridView_expand_text_size, -1);
+        mExpandText = a.getText(R.styleable.NineGridView_expand_text);
+        mFoldText = a.getText(R.styleable.NineGridView_fold_text);
+        if (TextUtils.isEmpty(mExpandText)) {
+            mExpandText = DEFAULT_EXPAND_TEXT;
+        }
+        if (TextUtils.isEmpty(mFoldText)) {
+            mFoldText = DEFAULT_FOLD_TEXT;
+        }
         mMaxCount = Math.min(maxCount, 9);
         if (mSpanCount > maxCount) {
             throw new IllegalArgumentException("SpanCount cannot be greater than MaxCount");
@@ -117,9 +136,9 @@ public class NineGridView<T> extends LinearLayout {
         layoutParams.rightMargin = gridTextSpacing;
         mExpandTextView.setLayoutParams(layoutParams);
         if (isExpand) {
-            mExpandTextView.setText("收起");
+            mExpandTextView.setText(mFoldText);
         } else {
-            mExpandTextView.setText("展开");
+            mExpandTextView.setText(mExpandText);
         }
         if (textSize != -1) {
             mExpandTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
@@ -210,7 +229,7 @@ public class NineGridView<T> extends LinearLayout {
         if (mNineGridAdapter != null) {
             isExpand = false;
             mNineGridAdapter.fold();
-            mExpandTextView.setText("展开");
+            mExpandTextView.setText(mExpandText);
             if (mOnExpandChangeListener != null) {
                 mOnExpandChangeListener.onChange(mExpandTextView, isExpand);
             }
@@ -226,13 +245,25 @@ public class NineGridView<T> extends LinearLayout {
             mNineGridAdapter.expand();
             if (mFoldEnable) {
                 mExpandTextView.setVisibility(View.VISIBLE);
-                mExpandTextView.setText("收起");
+                mExpandTextView.setText(mFoldText);
             } else {
                 mExpandTextView.setVisibility(View.GONE);
             }
             if (mOnExpandChangeListener != null) {
                 mOnExpandChangeListener.onChange(mExpandTextView, isExpand);
             }
+        }
+    }
+
+    private void setExpandTextInternal() {
+        if (!isExpand) {
+            mExpandTextView.setText(mExpandText);
+        }
+    }
+
+    private void setFoldTextInternal() {
+        if (isExpand) {
+            mExpandTextView.setText(mExpandText);
         }
     }
 
@@ -275,6 +306,46 @@ public class NineGridView<T> extends LinearLayout {
 
     public boolean isExpand() {
         return isExpand;
+    }
+
+    /**
+     * 设置展开时候的文本
+     *
+     * @param expandText 要展示的文本
+     */
+    public void setExpandText(CharSequence expandText) {
+        mExpandText = expandText;
+        setExpandTextInternal();
+    }
+
+    /**
+     * 设置收起时候的文本
+     *
+     * @param foldText 要展示的文本
+     */
+    public void setFoldText(CharSequence foldText) {
+        mFoldText = foldText;
+        setFoldTextInternal();
+    }
+
+    /**
+     * 设置展开时候的文本
+     *
+     * @param expandResId 要显示的字符串资源的资源标识符
+     */
+    public void setExpandText(@StringRes int expandResId) {
+        mExpandText = getContext().getResources().getText(expandResId);
+        setExpandTextInternal();
+    }
+
+    /**
+     * 设置收起时候的文本
+     *
+     * @param foldResId 要显示的字符串资源的资源标识符
+     */
+    public void setFoldText(@StringRes int foldResId) {
+        mFoldText = getContext().getResources().getText(foldResId);
+        setFoldTextInternal();
     }
 
     @Nullable
