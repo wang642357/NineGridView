@@ -158,6 +158,20 @@ public class NineGridView extends LinearLayout {
     }
 
     @Override
+    public void onViewAdded(View child) {
+        throw new IllegalStateException(getClass().getSimpleName() + " 暂不支持动态添加view");
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        if (widthMode != MeasureSpec.EXACTLY) {
+            throw new IllegalArgumentException(getClass().getSimpleName() + "不支持wrap_content");
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         mRecyclerView.addItemDecoration(mSpacingItemDecoration);
