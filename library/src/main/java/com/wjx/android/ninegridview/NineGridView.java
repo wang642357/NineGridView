@@ -100,6 +100,7 @@ public class NineGridView<T> extends LinearLayout {
         int textSize = a.getDimensionPixelSize(R.styleable.NineGridView_expand_text_size, -1);
         mExpandText = a.getText(R.styleable.NineGridView_expand_text);
         mFoldText = a.getText(R.styleable.NineGridView_fold_text);
+        mMinCount = mMinCount == 0 ? 3 : mMinCount;
         if (TextUtils.isEmpty(mExpandText)) {
             mExpandText = DEFAULT_EXPAND_TEXT;
         }
