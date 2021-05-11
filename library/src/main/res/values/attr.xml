@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="NineGridView">
+        <!--每行展示的数量，默认为3-->
         <attr name="grid_span_count" format="integer" />
+        <!--列间距-->
         <attr name="item_spacing" format="dimension|integer" />
+        <!--行间距-->
         <attr name="line_spacing" format="dimension|integer" />
+        <!--展示最大数量-->
         <attr name="grid_max_count" format="integer" />
+        <!--开启展开收起功能时的最小数量-->
         <attr name="grid_min_count" format="integer" />
+        <!--展开文本和九宫格间距-->
         <attr name="grid_text_spacing" format="dimension" />
         <!--是否支持展开功能-->
         <attr name="expand_enable" format="boolean" />
         <!--是否支持收起功能，只有expand_enable为true时才生效-->
         <attr name="fold_enable" format="boolean" />
+        <!--展开文本字体颜色-->
         <attr name="expand_text_color" format="color" />
+        <!--展开文本字体大小-->
         <attr name="expand_text_size" format="dimension" />
-        <attr name="expand_text_gravity" format="integer" />
+        <!--展开文本-->
         <attr name="expand_text" format="string|dimension" />
+        <!--收起文本-->
         <attr name="fold_text" format="string|dimension" />
     </declare-styleable>
 
