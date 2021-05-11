@@ -13,12 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wjx.android.ninegridview.adapter.NineGridAdapter;
-import com.wjx.android.ninegridview.adapter.NineGridAdapterWrapper;
 import com.wjx.android.ninegridview.itemdecoration.SpacingItemDecoration;
 import com.wjx.android.ninegridview.listener.OnExpandChangeListener;
 import com.wjx.android.ninegridview.listener.OnGridItemClickListener;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * <p>
  * 九宫格布局,支持展开收起
  */
-public class NineGridView<T> extends LinearLayout {
+public class NineGridView extends LinearLayout {
 
     private int mSpanCount;
 
@@ -49,7 +46,7 @@ public class NineGridView<T> extends LinearLayout {
 
     private Boolean mFoldEnable;
 
-    private NineGridAdapterWrapper<T> mNineGridAdapter;
+    private NineGridAdapter mNineGridAdapter;
 
     private OnExpandChangeListener mOnExpandChangeListener;
 
@@ -71,6 +68,8 @@ public class NineGridView<T> extends LinearLayout {
     private static final String DEFAULT_EXPAND_TEXT = "展开";
 
     private static final String DEFAULT_FOLD_TEXT = "收起";
+
+    private final NineGridViewDataObserver mObserver = new NineGridViewDataObserver();
 
     public NineGridView(Context context) {
         this(context, null);
@@ -154,11 +153,8 @@ public class NineGridView<T> extends LinearLayout {
             }
         });
         attachViewToParent(mExpandTextView, 1, mExpandTextView.getLayoutParams());
-        if (mExpandable) {
-            mExpandTextView.setVisibility(View.VISIBLE);
-        } else {
-            mExpandTextView.setVisibility(View.GONE);
-        }
+        mExpandTextView.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -199,13 +195,15 @@ public class NineGridView<T> extends LinearLayout {
         requestLayout();
     }
 
-    public void setAdapter(@Nullable NineGridAdapter<T> adapter) {
+    public void setAdapter(@Nullable NineGridAdapter adapter) {
+        if (mNineGridAdapter != null) {
+            mNineGridAdapter.unregisterAdapterDataObserver(mObserver);
+        }
         if (adapter != null) {
-            mNineGridAdapter = new NineGridAdapterWrapper<T>(mMinCount, mExpandable, adapter);
-            if (mNineGridAdapter.getAllData().size() > mMinCount) {
-                mExpandTextView.setVisibility(VISIBLE);
-            } else {
-                mExpandTextView.setVisibility(GONE);
+            mNineGridAdapter = adapter;
+            adapter.registerAdapterDataObserver(mObserver);
+            if (mExpandable) {
+                mNineGridAdapter.refreshData(mMinCount);
             }
             mRecyclerView.setAdapter(mNineGridAdapter);
         } else {
@@ -224,6 +222,9 @@ public class NineGridView<T> extends LinearLayout {
     }
 
     public void fold() {
+        if (!mFoldEnable) {
+            return;
+        }
         if (!isExpand) {
             return;
         }
@@ -238,6 +239,9 @@ public class NineGridView<T> extends LinearLayout {
     }
 
     public void expand() {
+        if (!mExpandable) {
+            return;
+        }
         if (isExpand) {
             return;
         }
@@ -265,6 +269,18 @@ public class NineGridView<T> extends LinearLayout {
     private void setFoldTextInternal() {
         if (isExpand) {
             mExpandTextView.setText(mExpandText);
+        }
+    }
+
+    void updateExpandTextState() {
+        if (mExpandable) {
+            if (mNineGridAdapter.getAllData().size() > mMinCount) {
+                mExpandTextView.setVisibility(VISIBLE);
+            } else {
+                mExpandTextView.setVisibility(GONE);
+            }
+        } else {
+            mExpandTextView.setVisibility(GONE);
         }
     }
 
@@ -349,19 +365,12 @@ public class NineGridView<T> extends LinearLayout {
         setFoldTextInternal();
     }
 
-    @Nullable
-    public List<T> getAllData() {
-        return mNineGridAdapter == null ? null : mNineGridAdapter.getAllData();
-    }
+    private class NineGridViewDataObserver extends RecyclerView.AdapterDataObserver {
 
-    @Nullable
-    public List<T> getData() {
-        return mNineGridAdapter == null ? null : mNineGridAdapter.getData();
-    }
-
-    @Nullable
-    public List<T> getFoldData() {
-        return mNineGridAdapter == null ? null : mNineGridAdapter.getFoldData();
+        @Override
+        public void onChanged() {
+            updateExpandTextState();
+        }
     }
 
     public static class SavedState extends AbsSavedState {
