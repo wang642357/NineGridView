@@ -28,7 +28,8 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         mBinding = ActivitySecondBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
-        mBinding.nineGrid.setAdapter(new NineGridAdapter<String>(R.layout.layout_image, getList()) {
+        NineGridAdapter<String> nineGridAdapterWrapper = new NineGridAdapter<String>(
+                R.layout.layout_image) {
             @Override
             public void onBindData(@NonNull View itemView, int position, @NonNull String item) {
                 ImageView content = itemView.findViewById(R.id.content);
@@ -36,7 +37,9 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
                         .load(item)
                         .into(content);
             }
-        });
+        };
+        nineGridAdapterWrapper.setList(getList());
+        mBinding.nineGrid.setAdapter(nineGridAdapterWrapper);
         mBinding.expand.setOnClickListener(this);
         mBinding.fold.setOnClickListener(this);
         mBinding.confirmExpand.setOnClickListener(this);

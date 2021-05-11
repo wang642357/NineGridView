@@ -39,9 +39,9 @@ class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
-        ImageAdapter imageAdapter = new ImageAdapter(mContext, R.layout.layout_image,
-                mDataList.get(position));
+        ImageAdapter imageAdapter = new ImageAdapter(mContext, R.layout.layout_image);
         holder.mNineGridView.setAdapter(imageAdapter);
+        imageAdapter.setList(mDataList.get(position));
         holder.mNineGridView.setOnItemClickListener(new OnGridItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -63,7 +63,7 @@ class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
 
     public static class ListViewHolder extends RecyclerView.ViewHolder {
 
-        NineGridView<String> mNineGridView;
+        NineGridView mNineGridView;
 
         public ListViewHolder(@NonNull View itemView) {
             super(itemView);

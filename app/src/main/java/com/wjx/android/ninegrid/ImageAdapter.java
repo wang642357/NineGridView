@@ -7,8 +7,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.wjx.android.ninegridview.adapter.NineGridAdapter;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 
 /**
@@ -19,8 +17,8 @@ public class ImageAdapter extends NineGridAdapter<String> {
 
     private Context mContext;
 
-    public ImageAdapter(Context context, int layoutRes, List<String> data) {
-        super(layoutRes, data);
+    public ImageAdapter(Context context, int layoutRes) {
+        super(layoutRes);
         mContext = context;
     }
 
