@@ -14,7 +14,7 @@ allprojects {
 ### 添加依赖：
 ```
 dependencies {
-    implementation 'com.github.wang642357:NineGridView:1.0.0'
+    implementation 'com.github.wang642357:NineGridView:1.0.0-beta02'
 }
 ```
 ## 使用方法
