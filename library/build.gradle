@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 group = 'com.github.wang642357'
-version = '1.0.0-beta01'
+version = '1.0.0-beta02'
 
 android {
     compileSdkVersion 30
@@ -12,8 +12,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 4
-        versionName "1.0.0-beta01"
+        versionCode 5
+        versionName "1.0.0-beta02"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -45,7 +45,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.github.wang642357'
                 artifactId = 'ninegridview'
-                version = '1.0.0-beta01'
+                version = '1.0.0-beta02'
             }
         }
     }
