@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.wjx.android.ninegrid.databinding.ActivitySecondBinding;
 import com.wjx.android.ninegridview.adapter.NineGridAdapter;
+import com.wjx.android.ninegridview.listener.OnExpandChangeListener;
+import com.wjx.android.ninegridview.listener.OnGridItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,18 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         };
         nineGridAdapterWrapper.setList(getList());
         mBinding.nineGrid.setAdapter(nineGridAdapterWrapper);
+        mBinding.nineGrid.setOnExpandChangeListener(new OnExpandChangeListener() {
+            @Override
+            public void onChange(View expandView, boolean isExpand) {
+
+            }
+        });
+        mBinding.nineGrid.setOnItemClickListener(new OnGridItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+
+            }
+        });
         mBinding.expand.setOnClickListener(this);
         mBinding.fold.setOnClickListener(this);
         mBinding.confirmExpand.setOnClickListener(this);
