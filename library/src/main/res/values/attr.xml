@@ -7,8 +7,6 @@
         <attr name="item_spacing" format="dimension|integer" />
         <!--行间距-->
         <attr name="line_spacing" format="dimension|integer" />
-        <!--展示最大数量-->
-        <attr name="grid_max_count" format="integer" />
         <!--开启展开收起功能时的最小数量-->
         <attr name="grid_min_count" format="integer" />
         <!--展开文本和九宫格间距-->

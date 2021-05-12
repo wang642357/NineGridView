@@ -34,8 +34,6 @@ public class NineGridView extends LinearLayout {
 
     private int mSpanCount;
 
-    private int mMaxCount;
-
     private int mItemSpacing;
 
     private int mLineSpacing;
@@ -89,7 +87,6 @@ public class NineGridView extends LinearLayout {
         mItemSpacing = a.getDimensionPixelSize(R.styleable.NineGridView_item_spacing, 0);
         mLineSpacing = a.getDimensionPixelSize(R.styleable.NineGridView_line_spacing, 0);
         mSpanCount = a.getInt(R.styleable.NineGridView_grid_span_count, 3);
-        int maxCount = a.getInt(R.styleable.NineGridView_grid_max_count, 9);
         mMinCount = a.getInt(R.styleable.NineGridView_grid_min_count, 3);
         mExpandable = a.getBoolean(R.styleable.NineGridView_expand_enable, false);
         mFoldEnable = a.getBoolean(R.styleable.NineGridView_fold_enable, false);
@@ -107,10 +104,6 @@ public class NineGridView extends LinearLayout {
             mFoldText = DEFAULT_FOLD_TEXT;
         }
         isExpand = !mExpandable;
-        mMaxCount = Math.min(maxCount, 9);
-        if (mSpanCount > maxCount) {
-            throw new IllegalArgumentException("SpanCount cannot be greater than MaxCount");
-        }
         a.recycle();
         setOrientation(VERTICAL);
         setClipChildren(false);
@@ -203,11 +196,6 @@ public class NineGridView extends LinearLayout {
         final SavedState ss = new SavedState(superState);
         ss.isExpand = isExpand;
         return ss;
-    }
-
-    public void setMaxCount(int maxCount) {
-        mMaxCount = maxCount;
-        requestLayout();
     }
 
     public void setAdapter(@Nullable NineGridAdapter adapter) {
@@ -311,10 +299,6 @@ public class NineGridView extends LinearLayout {
 
     public int getSpanCount() {
         return mSpanCount;
-    }
-
-    public int getMaxCount() {
-        return mMaxCount;
     }
 
     public int getItemSpacing() {
