@@ -3,6 +3,7 @@ package com.wjx.android.ninegrid;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -60,6 +61,22 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         mBinding.confirmFold.setOnClickListener(this);
         mBinding.expandText.setOnClickListener(this);
         mBinding.foldText.setOnClickListener(this);
+        mBinding.setExpandable.setChecked(mBinding.nineGrid.isSupportExpand());
+        mBinding.setFoldEnable.setChecked(mBinding.nineGrid.isSupportFold());
+        mBinding.setExpandable.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        mBinding.nineGrid.setExpandEnable(isChecked);
+                    }
+                });
+        mBinding.setFoldEnable.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        mBinding.nineGrid.setFoldEnable(isChecked);
+                    }
+                });
     }
 
     List<String> getList() {

@@ -106,6 +106,7 @@ public class NineGridView extends LinearLayout {
         if (TextUtils.isEmpty(mFoldText)) {
             mFoldText = DEFAULT_FOLD_TEXT;
         }
+        isExpand = !mExpandable;
         mMaxCount = Math.min(maxCount, 9);
         if (mSpanCount > maxCount) {
             throw new IllegalArgumentException("SpanCount cannot be greater than MaxCount");
@@ -333,6 +334,69 @@ public class NineGridView extends LinearLayout {
 
     public boolean isSupportExpand() {
         return mExpandable;
+    }
+
+    public boolean isSupportFold() {
+        return mFoldEnable;
+    }
+
+    /**
+     * 设置是否能展开收起,当设置false时，不支持收起
+     *
+     * @param expandable 是否能展开收起
+     */
+    public void setExpandEnable(boolean expandable) {
+        if (expandable) {
+            if (mFoldEnable) {
+                mExpandTextView.setVisibility(View.VISIBLE);
+                if (isExpand) {
+                    mExpandTextView.setText(mFoldText);
+                } else {
+                    mExpandTextView.setText(mExpandText);
+                }
+                if (mNineGridAdapter != null) {
+                    mNineGridAdapter.setMinCount(mMinCount);
+                }
+            } else {
+                mExpandTextView.setVisibility(View.GONE);
+            }
+        } else {
+            if (!isExpand) {
+                expand();
+            }
+            mExpandTextView.setVisibility(View.GONE);
+        }
+        mExpandable = expandable;
+    }
+
+    /**
+     * 设置是否能收起
+     *
+     * @param foldEnable 是否能收起
+     */
+    public void setFoldEnable(boolean foldEnable) {
+        if (!mExpandable) {
+            return;
+        }
+        if (mFoldEnable == foldEnable) {
+            return;
+        }
+        if (foldEnable) {
+            if (isExpand) {
+                mExpandTextView.setVisibility(View.VISIBLE);
+                mExpandTextView.setText(mFoldText);
+            }
+        } else {
+            if (!isExpand) {
+                if (mNineGridAdapter != null) {
+                    mNineGridAdapter.setMinCount(mMinCount);
+                }
+                mExpandTextView.setVisibility(View.VISIBLE);
+            } else {
+                mExpandTextView.setVisibility(View.GONE);
+            }
+        }
+        mFoldEnable = foldEnable;
     }
 
     public boolean isExpand() {

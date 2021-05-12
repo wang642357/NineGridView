@@ -83,5 +83,17 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
+
+        <CheckBox
+            android:text="是否展开"
+            android:id="@+id/set_expandable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:text="是否收起"
+            android:id="@+id/set_fold_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </ScrollView>

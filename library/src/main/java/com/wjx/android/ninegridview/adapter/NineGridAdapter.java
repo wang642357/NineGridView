@@ -183,6 +183,10 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
         notifyItemRangeInserted(positionStart, itemCount);
     }
 
+    public void setMinCount(int minCount) {
+        this.minCount = minCount;
+    }
+
     public Context getContext() {
         return mContext;
     }
