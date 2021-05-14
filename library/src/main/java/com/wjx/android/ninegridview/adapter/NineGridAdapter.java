@@ -35,6 +35,8 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
 
     private final int mLayoutRes;
 
+    private boolean isExpand = false;
+
     public NineGridAdapter(@LayoutRes int layoutRes) {
         mLayoutRes = layoutRes;
     }
@@ -94,25 +96,30 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
 
     public void setList(@Nullable List<T> dataList) {
         List<T> result = dataList == null ? new ArrayList<>() : dataList;
-        handleData(result);
+        handleData(isExpand, result);
     }
 
-    private void handleData(List<T> result) {
+    private void handleData(boolean isExpand, List<T> result) {
         if (CollectionUtils.isNotEmpty(result)) {
-            if (minCount <= 0) {
+            if (isExpand) {
                 data.clear();
                 data.addAll(result);
             } else {
-                if (minCount >= result.size()) {
+                if (minCount <= 0) {
                     data.clear();
                     data.addAll(result);
                 } else {
-                    data.clear();
-                    foldData.clear();
-                    List<T> list = result.subList(0, minCount);
-                    List<T> list2 = result.subList(minCount, result.size());
-                    data.addAll(list);
-                    foldData.addAll(list2);
+                    if (minCount >= result.size()) {
+                        data.clear();
+                        data.addAll(result);
+                    } else {
+                        data.clear();
+                        foldData.clear();
+                        List<T> list = result.subList(0, minCount);
+                        List<T> list2 = result.subList(minCount, result.size());
+                        data.addAll(list);
+                        foldData.addAll(list2);
+                    }
                 }
             }
         } else {
@@ -125,7 +132,14 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
         this.minCount = minCount;
         List<T> result = getAllData();
 
-        handleData(result);
+        handleData(isExpand, result);
+    }
+
+    public void refreshData(boolean isExpand, int minCount) {
+        this.minCount = minCount;
+        this.isExpand = isExpand;
+        List<T> result = getAllData();
+        handleData(isExpand, result);
     }
 
     public void addData(@NonNull T data) {
@@ -164,6 +178,7 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
         if (minCount >= data.size()) {
             return;
         }
+        isExpand = false;
         int itemCount = data.size() - minCount;
         List<T> visibleData = data.subList(0, minCount);
         List<T> goneData = data.subList(minCount, data.size());
@@ -177,6 +192,7 @@ public abstract class NineGridAdapter<T> extends RecyclerView.Adapter<NineGridVi
      * 展开宫格，展示最大数量
      */
     public void expand() {
+        isExpand = true;
         int positionStart = data.size();
         int itemCount = foldData.size();
         data.addAll(foldData);

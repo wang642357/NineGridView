@@ -201,7 +201,7 @@ public class NineGridView extends LinearLayout {
             mNineGridAdapter = adapter;
             adapter.registerAdapterDataObserver(mObserver);
             if (mExpandable) {
-                mNineGridAdapter.refreshData(mMinCount);
+                mNineGridAdapter.refreshData(isExpand, mMinCount);
             }
             setCurrentExpandText();
             mRecyclerView.setAdapter(mNineGridAdapter);
@@ -389,6 +389,10 @@ public class NineGridView extends LinearLayout {
             }
         }
         mFoldEnable = foldEnable;
+    }
+
+    public void setExpandState(boolean isExpand) {
+        this.isExpand = isExpand;
     }
 
     public boolean isExpand() {

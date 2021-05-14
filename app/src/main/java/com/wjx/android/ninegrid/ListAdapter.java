@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wjx.android.ninegridview.NineGridView;
@@ -22,9 +23,9 @@ class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
 
     private Context mContext;
 
-    private List<List<String>> mDataList;
+    private List<ImageEntity> mDataList;
 
-    public ListAdapter(Context context, List<List<String>> dataList) {
+    public ListAdapter(Context context, List<ImageEntity> dataList) {
         mContext = context;
         mDataList = dataList;
     }
@@ -39,9 +40,12 @@ class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
+        ImageEntity imageEntity = mDataList.get(position);
+        holder.title.setText("标题" + position);
+        holder.mNineGridView.setExpandState(imageEntity.isExpand);
         ImageAdapter imageAdapter = new ImageAdapter(mContext, R.layout.layout_image);
         holder.mNineGridView.setAdapter(imageAdapter);
-        imageAdapter.setList(mDataList.get(position));
+        imageAdapter.setList(imageEntity.urls);
         holder.mNineGridView.setOnItemClickListener(new OnGridItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -52,6 +56,7 @@ class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
             @Override
             public void onChange(View expandView, boolean isExpand) {
                 Toast.makeText(mContext, "" + isExpand, Toast.LENGTH_SHORT).show();
+                imageEntity.isExpand = isExpand;
             }
         });
     }
@@ -65,9 +70,12 @@ class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
 
         NineGridView mNineGridView;
 
+        TextView title;
+
         public ListViewHolder(@NonNull View itemView) {
             super(itemView);
             mNineGridView = itemView.findViewById(R.id.nine_grid);
+            title = itemView.findViewById(R.id.title);
         }
     }
 }

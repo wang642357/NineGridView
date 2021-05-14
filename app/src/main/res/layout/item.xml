@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <com.wjx.android.ninegridview.NineGridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/nine_grid"
-        app:expand_enable="true"
-        app:expand_text_color="#007aff"
-        app:fold_enable="true"
-        app:grid_min_count="3"
-        app:grid_text_spacing="10dp"
-        app:item_spacing="5dp"
-        app:line_spacing="5dp"
+    <TextView
+        android:id="@+id/title"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="标题"
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.wjx.android.ninegridview.NineGridView
+            android:id="@+id/nine_grid"
+            app:expand_enable="true"
+            app:expand_text_color="#007aff"
+            app:fold_enable="true"
+            app:grid_min_count="3"
+            app:grid_text_spacing="10dp"
+            app:item_spacing="5dp"
+            app:line_spacing="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>
