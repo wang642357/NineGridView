@@ -14,7 +14,8 @@ allprojects {
 ### 添加依赖：
 ```
 dependencies {
-    implementation 'com.github.wang642357:NineGridView:1.0.0'
+    //latest.release指最新SDK版本号，查看上面jitpack badge
+    implementation 'com.github.wang642357:NineGridView:latest.release'
 }
 ```
 ## 使用方法
