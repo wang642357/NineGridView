@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <com.wjx.android.ninegridview.NineGridView
-            app:expand_enable="true"
+            app:expand_enable="false"
             app:fold_enable="true"
             app:expand_text_size="15sp"
             app:expand_text_color="#007aff"

@@ -129,11 +129,7 @@ public class NineGridView extends LinearLayout {
         layoutParams.topMargin = gridTextSpacing;
         layoutParams.rightMargin = gridTextSpacing;
         mExpandTextView.setLayoutParams(layoutParams);
-        if (isExpand) {
-            mExpandTextView.setText(mFoldText);
-        } else {
-            mExpandTextView.setText(mExpandText);
-        }
+        setCurrentExpandText();
         if (textSize != -1) {
             mExpandTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
         }
@@ -148,7 +144,6 @@ public class NineGridView extends LinearLayout {
         });
         attachViewToParent(mExpandTextView, 1, mExpandTextView.getLayoutParams());
         mExpandTextView.setVisibility(View.GONE);
-
     }
 
     @Override
@@ -206,8 +201,9 @@ public class NineGridView extends LinearLayout {
             mNineGridAdapter = adapter;
             adapter.registerAdapterDataObserver(mObserver);
             if (mExpandable) {
-                mNineGridAdapter.refreshData(mMinCount);
+                mNineGridAdapter.refreshData(isExpand, mMinCount);
             }
+            setCurrentExpandText();
             mRecyclerView.setAdapter(mNineGridAdapter);
         } else {
             mExpandTextView.setVisibility(GONE);
@@ -263,6 +259,14 @@ public class NineGridView extends LinearLayout {
         }
     }
 
+    private void setCurrentExpandText() {
+        if (isExpand) {
+            mExpandTextView.setText(mFoldText);
+        } else {
+            mExpandTextView.setText(mExpandText);
+        }
+    }
+
     private void setExpandTextInternal() {
         if (!isExpand) {
             mExpandTextView.setText(mExpandText);
@@ -295,6 +299,10 @@ public class NineGridView extends LinearLayout {
 
     public void setOnExpandChangeListener(OnExpandChangeListener listener) {
         this.mOnExpandChangeListener = listener;
+    }
+
+    public NineGridAdapter getNineGridAdapter() {
+        return mNineGridAdapter;
     }
 
     public int getSpanCount() {
@@ -381,6 +389,10 @@ public class NineGridView extends LinearLayout {
             }
         }
         mFoldEnable = foldEnable;
+    }
+
+    public void setExpandState(boolean isExpand) {
+        this.isExpand = isExpand;
     }
 
     public boolean isExpand() {

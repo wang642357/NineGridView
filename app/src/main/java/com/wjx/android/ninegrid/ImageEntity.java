@@ -8,4 +8,6 @@ import java.util.List;
 public class ImageEntity {
 
     public List<String> urls;
+
+    public boolean isExpand;
 }

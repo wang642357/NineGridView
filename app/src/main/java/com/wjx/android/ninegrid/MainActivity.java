@@ -26,18 +26,19 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    List<String> getList() {
+    ImageEntity getList() {
         List<String> list = new ArrayList<>();
         list.add("https://img0.baidu.com/it/u=2583275964,2440658935&fm=11&fmt=auto&gp=0.jpg");
         /*list.add("https://img0.baidu.com/it/u=2583275964,2440658935&fm=11&fmt=auto&gp=0.jpg");
         list.add("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fnimg.ws.126.net%2F%3Furl%3Dhttp%253A%252F%252Fdingyue.ws.126.net%252F2021%252F0327%252F19478f8aj00qqm90m00f5c0011i01e0m.jpg%26thumbnail%3D650x2147483647%26quality%3D80%26type%3Djpg&refer=http%3A%2F%2Fnimg.ws.126.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1623035211&t=5a158f5eb45f471b597515511b3c88e2");
         list.add("https://img0.baidu.com/it/u=2583275964,2440658935&fm=11&fmt=auto&gp=0.jpg");
         list.add("https://b-ssl.duitang.com/uploads/blog/201308/05/20130805105309_5E2zE.jpeg");*/
-
-        return list;
+        ImageEntity imageEntity = new ImageEntity();
+        imageEntity.urls = list;
+        return imageEntity;
     }
 
-    List<String> getList3() {
+    ImageEntity getList3() {
         List<String> list = new ArrayList<>();
         list.add(
                 "http://imagetest.minyoufang.com/minyoufang/business/2021/0409/11/bf12febb-accc-c958-ea94-08d8fb06f3a9?_t=20210409112414961");
@@ -52,27 +53,33 @@ public class MainActivity extends AppCompatActivity {
                 "http://imagetest.minyoufang.com/minyoufang/business/2021/0409/11/545ba4a6-c70f-c911-f65a-08d8fb06f457?_t=20210409112416101");
         list.add(
                 "http://imagetest.minyoufang.com/minyoufang/business/2021/0409/11/a887d7e7-dcc4-c18d-929a-08d8fb06f474?_t=20210409112416289");
-        return list;
+        ImageEntity imageEntity = new ImageEntity();
+        imageEntity.urls = list;
+        return imageEntity;
     }
 
-    List<String> getList4() {
+    ImageEntity getList4() {
         List<String> list = new ArrayList<>();
         list.add("https://img0.baidu.com/it/u=2583275964,2440658935&fm=11&fmt=auto&gp=0.jpg");
         list.add("https://img0.baidu.com/it/u=2583275964,2440658935&fm=11&fmt=auto&gp=0.jpg");
         list.add(
                 "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fnimg.ws.126.net%2F%3Furl%3Dhttp%253A%252F%252Fdingyue.ws.126.net%252F2021%252F0327%252F19478f8aj00qqm90m00f5c0011i01e0m.jpg%26thumbnail%3D650x2147483647%26quality%3D80%26type%3Djpg&refer=http%3A%2F%2Fnimg.ws.126.net&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1623035211&t=5a158f5eb45f471b597515511b3c88e2");
         list.add("https://img0.baidu.com/it/u=2583275964,2440658935&fm=11&fmt=auto&gp=0.jpg");
-        return list;
+        ImageEntity imageEntity = new ImageEntity();
+        imageEntity.urls = list;
+        return imageEntity;
     }
 
-    List<List<String>> getList2() {
-        List<List<String>> list = new ArrayList<>();
+    List<ImageEntity> getList2() {
+        List<ImageEntity> list = new ArrayList<>();
         list.add(getList());
         list.add(getList3());
         list.add(getList4());
         list.add(getList3());
         list.add(getList4());
         list.add(getList());
+        list.add(getList3());
+        list.add(getList4());
         return list;
     }
 }
